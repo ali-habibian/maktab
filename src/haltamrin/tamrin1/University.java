@@ -3,17 +3,18 @@ package haltamrin.tamrin1;
 import java.util.Scanner;
 
 public class University {
+    public static final double UNI_LAT = 35.7036;
+    public static final double UNI_LON = 51.3515;
+    public static final int EMPLOYEES_SIZE = 10;
+
     Scanner input = new Scanner(System.in);
 
     private Employee[] employees;
 
     public void AddEmployee() {
-        System.out.print("Enter number of employees you want to add: ");
-        int size = input.nextInt();
+        employees = new Employee[EMPLOYEES_SIZE];
 
-        employees = new Employee[size];
-
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < EMPLOYEES_SIZE; i++) {
             Location location = new Location();
 
             System.out.print("Enter Id: ");
@@ -83,7 +84,7 @@ public class University {
                 double lat = employee.getLocation().getLatitude();
                 double lon = employee.getLocation().getLongitude();
                 if (employee.getPartner() != null &&
-                        distance(lat, UniversityLocation.LAT, lon, UniversityLocation.LON) < 30000) {
+                        distance(lat, UNI_LAT, lon, UNI_LON) < 30000) {
                     System.out.println("Invited");
                 } else {
                     System.out.println("Not Invited");
@@ -97,7 +98,7 @@ public class University {
             double lat = employee.getLocation().getLatitude();
             double lon = employee.getLocation().getLongitude();
             if (employee.getPartner() != null &&
-                    distance(lat, UniversityLocation.LAT, lon, UniversityLocation.LON) < 30000) {
+                    distance(lat, UNI_LAT, lon, UNI_LON) < 30000) {
                 System.out.println(employee);
             }
         }
