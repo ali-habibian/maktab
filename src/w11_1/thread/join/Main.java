@@ -2,6 +2,10 @@ package w11_1.thread.join;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,7 +39,7 @@ public class Main {
 
         System.out.println("Downloading..." + virus.getCount());*/
 
-        Virus virus = new Virus();
+     /*   Virus virus = new Virus();
         Thread t1 = new Thread(new ScanThread(virus));
         t1.start();
 
@@ -61,7 +65,24 @@ public class Main {
             t2.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }*/
+
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        Virus virus = new Virus();
+
+        for (int i = 0; i < 10; i++) {
+            executorService.execute(new ScanThread(virus));
         }
+
+        try {
+            executorService.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService.shutdown();
+
+        System.out.println(virus.getCount());
     }
 
 }

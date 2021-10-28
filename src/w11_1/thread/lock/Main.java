@@ -1,6 +1,11 @@
 package w11_1.thread.lock;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,8 +13,25 @@ public class Main {
         MessageEntity three = new MessageEntity("3", "B");
         MessageEntity four = new MessageEntity("4", "C");
         MessageEntity twoD = new MessageEntity("2", "D");
-        MessageEntity three3 = new MessageEntity("3", "B");
 
-        System.out.println(LockUtil.putAllAndCheck("1", Arrays.asList(twoA, three, four, twoD, three3)));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        List<Future<List<List<Boolean>>>> futures = new ArrayList<>();
+        List<List<List<Boolean>>> myCallables = new ArrayList<>();
+
+
+            Future<List<List<Boolean>>> future = executorService.submit(new MyCallable(twoA, three, four, twoD));
+            try {
+                List<List<Boolean>> myCallable = future.get();
+                myCallables.add(myCallable);
+                futures.add(future);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        for (List<List<Boolean>> m: myCallables) {
+            System.out.println(m);
+        }
+        executorService.shutdown();
     }
 }

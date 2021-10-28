@@ -43,7 +43,7 @@ public class LockUtil {
 
     private static boolean setNewTime(String key, MessageEntity value) {
         ConcurrentMap<MessageEntity, Date> destMap = lockMap.get(key);
-        if (System.currentTimeMillis() - destMap.get(value).getTime() > 40000) {
+        if (System.currentTimeMillis() - destMap.get(value).getTime() > 1001) {
             destMap.put(value, new Date());
             return true;
         }
